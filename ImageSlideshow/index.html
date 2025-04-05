@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<style>
+    .slide-container {
+        position: absolute;
+    }
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 32%;
+        width: auto;
+        padding: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        user-select: none;
+    } 
+    .next {
+        right: 0px;
+
+    }
+    .prev:hover, .next:hover {
+        background-color: black;
+    }
+</style>
+
+<body>
+    <div  id="slide-container" class="slide-container">
+        
+    </div>
+
+    <script>
+        const arr = ['https://www.w3schools.com/howto/img_mountains_wide.jpg', 'https://www.w3schools.com/howto/img_nature_wide.jpg']
+        let content = '';
+        let slideIndex = 1;
+
+        const handleClick = (n) => {
+            showSlides(slideIndex+=n)
+        }
+
+
+        arr.forEach((i, index) => {
+            let slide = document.createElement("slides");
+            slide.className = "slides fade"
+            slide.id = `slides-${index}`
+            let img = document.createElement("IMG");
+            img.src = i
+            img.className = 'image'
+
+            let headerText = document.createElement('h2');
+            headerText.textContent = `${index+1}/${arr.length}`
+            slide.appendChild(img);
+            slide.appendChild(headerText);
+
+            let prev = document.createElement('a');
+            prev.className = 'prev';
+            prev.textContent = "◀️"
+            prev.onclick = () => handleClick(-1);
+            
+            let next = document.createElement('a');
+            next.className = 'next';
+            next.textContent = "▶️"
+            next.onclick = () => handleClick(1);
+
+            document.getElementById('slide-container').appendChild(prev);
+            document.getElementById('slide-container').appendChild(next);
+            document.getElementById('slide-container').appendChild(slide);
+        });
+        showSlides(slideIndex);
+        function showSlides(number) {
+            const slides = document.getElementsByClassName('slides');
+
+            if(number > slides.length) slideIndex = 1;
+            if(number < 1) slideIndex = slides.length;
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+            slides[slideIndex -1].style.display = 'block';
+        }
+       
+    </script>
+</body>
+
+
+
+</html>
