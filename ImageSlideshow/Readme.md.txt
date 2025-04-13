@@ -1,1 +1,0 @@
-Dynamically rendered Image slides
