@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BroadcastChannel Cart Sync Demo</title>
+</head>
+<body>
+  <h2>Shopping Cart Sync Across Tabs</h2>
+  <button id="addBtn">Add to Cart</button>
+  <ul id="cartList"></ul>
+
+  <script>
+    // BroadcastChannel instance
+    const cartChannel = new BroadcastChannel("cart_channel");
+
+    // Local cart state
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Save cart and notify other tabs
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      cartChannel.postMessage({ type: "UPDATE_CART", payload: cart });
+      renderCart();
+    }
+
+    // Render cart to UI
+    function renderCart() {
+      const list = document.getElementById("cartList");
+      list.innerHTML = "";
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - ₹${item.price}`;
+        list.appendChild(li);
+      });
+    }
+
+    // Add item button
+    document.getElementById("addBtn").onclick = () => {
+      const newItem = {
+        id: Date.now(),
+        name: "Sample Item " + (cart.length + 1),
+        price: Math.floor(Math.random() * 5000) + 1000
+      };
+      cart.push(newItem);
+      saveCart();
+    };
+
+    // Listen for updates from other tabs
+    cartChannel.onmessage = (event) => {
+      if (event.data.type === "UPDATE_CART") {
+        cart = event.data.payload;
+        renderCart();
+      }
+    };
+
+    // Render on page load
+    renderCart();
+  </script>
+</body>
+</html>
