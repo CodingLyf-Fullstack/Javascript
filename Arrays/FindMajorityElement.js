@@ -1,4 +1,4 @@
-// Reel 37:
+
 // Find the Majority Element in an Array
 
 // Problem:
