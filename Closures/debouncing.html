@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="search-bar" placeholder="Type to search..." />
+    <div id="result"></div>
+
+    <script>
+        // Debounce function
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(null, args);
+                }, delay);
+            };
+        }
+
+        // Simulated API function
+        function searchQuery(query) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Searching for: <strong>${query}</strong>`;
+            console.log(`API call with query: ${query}`);
+        }
+
+        // Add debounce to search bar input
+        const searchInput = document.getElementById('search-bar');
+        const debouncedSearch = debounce(searchQuery, 1000);
+
+        searchInput.addEventListener('input', (event) => {
+            debouncedSearch(event.target.value);
+            // searchQuery(event.target.value);
+        });
+
+    </script>
+</body>
+
+</html>

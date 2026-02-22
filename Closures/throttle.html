@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body style="height: 5000px;">
+    <script>
+
+        const btn = document.querySelector("#throttle");
+
+        function throttle(func, delay) {
+            let timerFlag = false;
+            return function (...args) {
+                if (!timerFlag) {
+                    func();
+                    timerFlag = true
+                    setTimeout(function () {
+                        timerFlag = false;
+                    }, delay);
+
+                }
+            }
+        }
+            // const tFunc = ;
+            window.addEventListener('scroll', throttle(() => console.log('scroll'), 5000))
+    </script>
+
+</body>
+
+</html>
